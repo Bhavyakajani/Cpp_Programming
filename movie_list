@@ -1,0 +1,105 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+//structure Movie
+struct Movie{
+    int id;
+    char* title;
+    char* director;
+    int year;
+    Movie* next; 
+};
+   struct Movie* head=nullptr;
+void add_movie(int id, const char* title, const char* director, int year)
+    {
+        //allocating memory
+        Movie* new_movie=new Movie;
+        Movie* current_movie=head;
+        Movie* prev_movie=nullptr;
+        new_movie->id=id;
+        new_movie->year=year;
+        new_movie->title=new char[strlen(title)+1];
+        new_movie->director=new char[strlen(director)+1];
+        strcpy(new_movie->title, title);
+        strcpy(new_movie->director, director);
+        new_movie->next=nullptr;
+        int a = 1;
+        
+        //condition to check if head is not empty
+        if(head==nullptr){
+            head=new_movie;
+        }
+        
+        else{
+            //arranging the list in ascedning order an add the elemnts accordingly
+            if(head->id>=id){
+                new_movie->next=head;
+                head=new_movie;
+                a=0;
+            }
+            while(current_movie!=nullptr && a==1){
+              if(current_movie->id<new_movie->id&&current_movie->next==nullptr){
+                current_movie->next=new_movie;
+                break; 
+              }
+              else if(current_movie->id>=new_movie->id){
+                  prev_movie->next=new_movie;
+                  new_movie->next=current_movie;
+                  break;
+              }
+              else{
+                    prev_movie=current_movie;
+                    current_movie=current_movie->next;
+                }
+            }
+        }
+}
+void remove_Movie(int id)
+    {
+       Movie* temp=new Movie;
+       Movie* current_movie=head;
+       Movie* prev_movie=new Movie;
+       temp=current_movie;
+       if(head->id == id){
+            head = head->next;
+        }
+        
+        //changing for the previous movie to the temp for removing the node
+       while(temp!=nullptr&& temp->id!=id)
+        {
+           prev_movie=temp;
+           temp=temp->next;
+        }
+        prev_movie->next=temp->next;
+        delete [] temp;//deallocating memory
+    }
+void print(){
+    Movie* current_movie=head;
+    //printing the list
+    while(current_movie!=nullptr){
+        cout<<current_movie->id<<" "<<current_movie->title<<" "<<current_movie->director<<" "<<current_movie->year<<"\n"<<endl;
+        current_movie=current_movie->next;
+        
+        
+    }
+    
+}
+int main()
+{   
+    //calling the functions and displaying some messages
+    cout<<"The List after adding the Movies:\n"<<endl;
+    add_movie(3, "sdfdd", "dvsdv", 5484);
+    add_movie(1, "sdfsdd", "sdvsdv", 5400);
+    add_movie(2, "lol","Michael Jackson", 2005);
+    add_movie(4, "sdfs", "vsdv", 2001);
+    print();
+    cout<<"\n\n"<<endl;
+    cout<<"List after removing a Movie:"<<"\n"<<endl;
+    remove_Movie(2);
+    print();
+   
+    
+    
+    return 0;
+}

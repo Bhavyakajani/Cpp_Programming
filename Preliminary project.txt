@@ -1,0 +1,19 @@
+			Restaurant Management
+
+This code will contain the most of the functions required by a restaurant for placing an order by a customer. It will ask for multiple choices like if it is a takeaway
+or Dine in. Then providing a menu with option of different options for food and asking the type too(e.g. starters, main, dessert, lunch, etc...). 
+And creating the final bill for the user(Just a random idea fit it somewhere :- User will be asked for more options if its dine in, like assigning the table no. )
+
+
+Classes:
+
+Restaurant : Main class containing all the members related to placing an order , printing menu, and NO. of orders
+
+Menu : just an extension to the main class, creating the menu and providing with the options of quantity.
+
+Price : This class would assign the prices for the food items according to the quantity.
+
+Billing : Class would relate to the tasks with billing(adding the food items according to quantity and shit).
+
+
+ 

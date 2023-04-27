@@ -1,0 +1,264 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Movie{
+    int id;
+    char* title;
+    char* director;
+    int year;
+    Movie * next;
+    
+public:
+    Movie(int id, const char* title, const char* director, int year);
+    ~Movie();
+    void print();
+    friend class Movielist;
+};
+
+class Movielist{
+    Movie * head;
+public : 
+    Movielist();
+    void add_movie(int id, const char* title, const char* director, int year);
+    void remove_Movie(int id);
+    void print();
+    ~Movielist();
+};
+
+ Movie::Movie(int id, const char* title, const char* director, int year){
+        
+        
+        this->id=id;
+
+        this->year=year;
+
+        this->title=new char[strlen(title)+1];
+
+        this->director=new char[strlen(director)+1];
+
+        strcpy(this->title, title);
+
+        strcpy(this->director, director);
+
+        this->next=nullptr;
+}
+
+Movie::~Movie(){
+    
+    delete [] title;
+    delete [] director;
+    
+}
+
+Movielist :: Movielist(){
+    head=nullptr;
+}
+
+
+Movielist :: ~Movielist(){
+    
+    while(head){
+        remove_Movie(head->id);
+    }
+}
+   //struct Movie* head=nullptr;
+
+void Movielist :: add_movie(int id, const char* title, const char* director, int year)
+
+    {
+
+        //allocating memory
+
+        auto* new_movie=new Movie(id, title, director, year);
+
+        auto* current_movie=head;
+
+        Movie* prev_movie=nullptr;
+
+        int a = 1;
+
+        //condition to check if head is not empty
+
+        if(head==nullptr){
+
+            head=new_movie;
+
+            cout<<"List is empty \n"<<endl;
+
+        }
+        else{
+
+            //arranging the list in ascedning order an add the elemnts accordingly
+
+            if(head->id==new_movie->id){
+
+                cout<<"Movie with same id already exists."<<endl;
+
+            }
+
+            else{
+
+                if(head->id>id){
+
+               new_movie->next=head;
+
+                head=new_movie;
+
+                a=0;
+
+            }
+
+            while(current_movie!=nullptr && a==1){
+                
+                if(current_movie->id==new_movie->id)
+                return;
+
+              if(current_movie->id<new_movie->id&&current_movie->next==nullptr){
+
+                current_movie->next=new_movie;
+
+                break;
+
+              }
+
+              else if(current_movie->id>=new_movie->id){
+
+                  prev_movie->next=new_movie;
+
+                  new_movie->next=current_movie;
+
+                  break;
+
+              }
+
+              else{
+
+                    prev_movie=current_movie;
+
+                    current_movie=current_movie->next;
+
+                }
+
+            }
+
+            }
+
+        }
+
+}
+
+void Movielist :: remove_Movie(int id)
+
+    {
+       auto* current_movie=head;
+
+       Movie* prev_movie=nullptr;
+
+       if(current_movie->id == id){
+            
+           
+            head = head->next;
+           
+            return;
+        }
+        
+       
+
+        //changing for the previous movie to the temp for removing the node
+
+       while(current_movie!=nullptr && current_movie->id!=id)
+
+        {
+
+           prev_movie=current_movie;
+
+           current_movie=current_movie->next;
+
+        }
+
+        prev_movie->next=current_movie->next;
+    }
+
+void Movielist :: print(){
+
+    auto* current_movie=head;
+
+    //printing the list
+
+    while(current_movie!=nullptr){
+
+        cout<<current_movie->id<<". "<<current_movie->title<<" - "<<current_movie->director<<" - "<<current_movie->year<<"\n"<<endl;
+
+        current_movie=current_movie->next;
+    }
+}
+
+int main()
+
+{  
+    //cout<<"It works"<<endl;
+    Movielist a;
+   auto* b=new Movielist();
+   
+    cout<<"\n------------Automatic mode:--------------\n\n"<<endl;
+
+    //calling the functions and displaying some messages
+
+    a.add_movie(3, "sdfdd", "dvsdv", 5484);
+
+    a.add_movie(1, "sdfsdd", "sdvsdv", 5400);
+
+    a.add_movie(2, "lol","Michael Jackson", 2005);
+
+    a.add_movie(4, "sdfs", "vsdv", 2001);
+
+    cout<<"The List after adding the Movies:\n"<<endl;
+
+    a.print();
+
+    cout<<"\n\n"<<endl;
+
+    cout<<"List after removing a Movie:"<<"\n"<<endl;
+
+    a.remove_Movie(2);
+    a.remove_Movie(1);
+    a.remove_Movie(4);
+
+    a.print();
+    
+    cout<<"\n------------Dynamic mode:--------------\n\n"<<endl;
+    
+    b->add_movie(3, "sdfdd", "dvsdv", 5484);
+
+    b->add_movie(1, "sdfsdd", "sdvsdv", 5400);
+
+    b->add_movie(2, "lol","Michael Jackson", 2005);
+
+    b->add_movie(4, "sdfs", "vsdv", 2001);
+
+    cout<<"The List after adding the Movies:\n"<<endl;
+
+    b->print();
+
+    cout<<"\n\n"<<endl;
+
+    cout<<"List after removing a Movie:"<<"\n"<<endl;
+
+    b->remove_Movie(2);
+    b->remove_Movie(1);
+    b->remove_Movie(4);
+
+    b->print();
+    
+    a.~Movielist();
+    cout<<"\n\nList has been Deleted successfully(auto)."<<endl;
+    a.print();
+    b->~Movielist();
+    cout<<"\n\nList has been Deleted successfully(dynamic)."<<endl;
+    b->print();
+    
+    return 0;
+
+}
